@@ -1,0 +1,1096 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../samba-dc2/sambadc2/">
+      
+      
+        <link rel="next" href="../../win11/Windows11/">
+      
+      <link rel="icon" href="../../favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>Servidor de Arquivos - Rocky Linux 9.x AD-DC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.eebd395e.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Jost";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#membro-e-servidor-de-arquivos-do-ad" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Rocky Linux 9.x AD-DC" class="md-header__button md-logo" aria-label="Rocky Linux 9.x AD-DC" data-md-component="logo">
+      
+  <img src="../../icons896.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Rocky Linux 9.x AD-DC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Servidor de Arquivos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/doguibnu/rocky9sambaad" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    doguibnu/Rocky9-Samba-AD-DC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Rocky Linux 9.x AD-DC" class="md-nav__button md-logo" aria-label="Rocky Linux 9.x AD-DC" data-md-component="logo">
+      
+  <img src="../../icons896.png" alt="logo">
+
+    </a>
+    Rocky Linux 9.x AD-DC
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/doguibnu/rocky9sambaad" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    doguibnu/Rocky9-Samba-AD-DC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Rocky-Samba
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sambadc1/samba-ad-dc1/" class="md-nav__link">
+        Samba AD-DC1
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../samba-dc2/sambadc2/" class="md-nav__link">
+        Samba AD-DC2 Replicador
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Servidor de Arquivos
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Servidor de Arquivos
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#membro-e-servidor-de-arquivos-do-ad" class="md-nav__link">
+    Membro e Servidor de Arquivos do AD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iniciando-o-processo" class="md-nav__link">
+    Iniciando o processo
+  </a>
+  
+    <nav class="md-nav" aria-label="Iniciando o processo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-e-upgrade-do-sistema" class="md-nav__link">
+    Update e Upgrade do sistema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instale-o-samba-e-pacotes-necessarios" class="md-nav__link">
+    Instale o Samba e pacotes necessários
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-e-edite-o-arquivo-etchosts" class="md-nav__link">
+    Configure e edite o arquivo /etc/hosts:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edite-o-arquivo-etchostname" class="md-nav__link">
+    Edite o arquivo /etc/hostname
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editar-o-arquivo-etcnsswitchconf" class="md-nav__link">
+    Editar o arquivo /etc/nsswitch.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-a-rede" class="md-nav__link">
+    Configure a Rede
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reinicie-o-sistema" class="md-nav__link">
+    Reinicie o sistema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-usermap" class="md-nav__link">
+    Arquivo user.map
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-do-arquivo-original-smbconf" class="md-nav__link">
+    Backup do arquivo original smb.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-dispositivo-de-rede" class="md-nav__link">
+    Verificar dispositivo de rede
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crie-e-edite-o-arquivo-smbconf" class="md-nav__link">
+    Crie e edite o arquivo smb.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-do-arquivo-krb5conf" class="md-nav__link">
+    Backup do arquivo krb5.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crie-um-novo-arquivo-krb5conf" class="md-nav__link">
+    Crie um novo arquivo krb5.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comando-testparm" class="md-nav__link">
+    Comando testparm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#desabilite-o-selinux" class="md-nav__link">
+    Desabilite o SELinux
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ajuste-o-firewall" class="md-nav__link">
+    Ajuste o Firewall
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reiniciar-o-servidor" class="md-nav__link">
+    Reiniciar o servidor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#junte-se-ao-ad-dc1-join-ad" class="md-nav__link">
+    Junte-se ao AD-DC1 (join AD)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifique-a-conexao-netlogon" class="md-nav__link">
+    Verifique a conexão NETLOGON
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nslookup" class="md-nav__link">
+    Nslookup
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volte-para-o-servidor-de-arquivos" class="md-nav__link">
+    Volte para o Servidor de Arquivos
+  </a>
+  
+    <nav class="md-nav" aria-label="Volte para o Servidor de Arquivos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gid-grupo-a-partir-do-servidor-de-arquivos" class="md-nav__link">
+    GID grupo a partir do Servidor de Arquivos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#garantir-privilegios" class="md-nav__link">
+    Garantir Privilégios
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ajustando-permissoes" class="md-nav__link">
+    Ajustando Permissões
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recarregar-o-samba" class="md-nav__link">
+    Recarregar o samba
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rsat-windows" class="md-nav__link">
+    RSAT Windows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../win11/Windows11/" class="md-nav__link">
+        Windows 11 RSAT
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../thanks/thanks/" class="md-nav__link">
+        Agradecimentos
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#membro-e-servidor-de-arquivos-do-ad" class="md-nav__link">
+    Membro e Servidor de Arquivos do AD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iniciando-o-processo" class="md-nav__link">
+    Iniciando o processo
+  </a>
+  
+    <nav class="md-nav" aria-label="Iniciando o processo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-e-upgrade-do-sistema" class="md-nav__link">
+    Update e Upgrade do sistema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instale-o-samba-e-pacotes-necessarios" class="md-nav__link">
+    Instale o Samba e pacotes necessários
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-e-edite-o-arquivo-etchosts" class="md-nav__link">
+    Configure e edite o arquivo /etc/hosts:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edite-o-arquivo-etchostname" class="md-nav__link">
+    Edite o arquivo /etc/hostname
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editar-o-arquivo-etcnsswitchconf" class="md-nav__link">
+    Editar o arquivo /etc/nsswitch.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-a-rede" class="md-nav__link">
+    Configure a Rede
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reinicie-o-sistema" class="md-nav__link">
+    Reinicie o sistema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-usermap" class="md-nav__link">
+    Arquivo user.map
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-do-arquivo-original-smbconf" class="md-nav__link">
+    Backup do arquivo original smb.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-dispositivo-de-rede" class="md-nav__link">
+    Verificar dispositivo de rede
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crie-e-edite-o-arquivo-smbconf" class="md-nav__link">
+    Crie e edite o arquivo smb.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-do-arquivo-krb5conf" class="md-nav__link">
+    Backup do arquivo krb5.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crie-um-novo-arquivo-krb5conf" class="md-nav__link">
+    Crie um novo arquivo krb5.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comando-testparm" class="md-nav__link">
+    Comando testparm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#desabilite-o-selinux" class="md-nav__link">
+    Desabilite o SELinux
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ajuste-o-firewall" class="md-nav__link">
+    Ajuste o Firewall
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reiniciar-o-servidor" class="md-nav__link">
+    Reiniciar o servidor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#junte-se-ao-ad-dc1-join-ad" class="md-nav__link">
+    Junte-se ao AD-DC1 (join AD)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifique-a-conexao-netlogon" class="md-nav__link">
+    Verifique a conexão NETLOGON
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nslookup" class="md-nav__link">
+    Nslookup
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volte-para-o-servidor-de-arquivos" class="md-nav__link">
+    Volte para o Servidor de Arquivos
+  </a>
+  
+    <nav class="md-nav" aria-label="Volte para o Servidor de Arquivos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gid-grupo-a-partir-do-servidor-de-arquivos" class="md-nav__link">
+    GID grupo a partir do Servidor de Arquivos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#garantir-privilegios" class="md-nav__link">
+    Garantir Privilégios
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ajustando-permissoes" class="md-nav__link">
+    Ajustando Permissões
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recarregar-o-samba" class="md-nav__link">
+    Recarregar o samba
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rsat-windows" class="md-nav__link">
+    RSAT Windows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Servidor de Arquivos</h1>
+
+<h2 id="membro-e-servidor-de-arquivos-do-ad">Membro e Servidor de Arquivos do AD</h2>
+<p>Vamos configurar a <strong>Terceira</strong> máquina  que servirá como servidor de arquivos do AD</p>
+<h2 id="iniciando-o-processo">Iniciando o processo</h2>
+<h3 id="update-e-upgrade-do-sistema">Update e Upgrade do sistema</h3>
+<p>Faça um <code>update</code> e um <code>upgrade</code> do sistema. Utilize o comando:</p>
+<pre><code>dnf update -y &amp;&amp; dnf upgrade -y
+</code></pre>
+<hr />
+<h3 id="instale-o-samba-e-pacotes-necessarios">Instale o Samba e pacotes necessários</h3>
+<p>Instale o <code>samba</code> e seus pacotes necessários para <code>servidor de arquivos</code> e também o editor de textos <code>nano</code>. Observe que iremos utilizar os pacotes disponíveis do Rocky Linux, sem precisar baixar e compilar o samba.  Utilize o comando abaixo:</p>
+<pre><code>dnf install -y nano samba samba-winbind samba-winbind-clients bind-utils
+</code></pre>
+<p><code>Habilite</code> os serviços <code>smb nmb e winbind</code> para iniciar junto ao boot do sistema:</p>
+<pre><code>systemctl enable smb nmb winbind
+</code></pre>
+<hr />
+<h3 id="configure-e-edite-o-arquivo-etchosts">Configure e edite o arquivo <strong><code>/etc/hosts</code></strong>:</h3>
+<p>Utilize o editor de texto <code>nano</code> para editar o arquivo <code>/etc/hosts</code></p>
+<pre><code>nano /etc/hosts
+</code></pre>
+<pre><code>127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+10.1.1.13   SRVFILE.seu.dominio SRVFILE
+::1 localhost localhost.localdomain localhost6 localhost6.localdomain6
+</code></pre>
+<p><strong>Onde:</strong></p>
+<p><code>10.1.1.13</code> = IP do seu Servidor de Arquivos</p>
+<p><code>SRVFILE.seu.dominio</code> = nome completo do host+domínio</p>
+<p><code>SRVFILE</code> = nome curto de seu host</p>
+<p><strong>Salve o arquivo</strong></p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<hr />
+<h3 id="edite-o-arquivo-etchostname">Edite o arquivo <strong><code>/etc/hostname</code></strong></h3>
+<p>Com o editor de textos <code>nano</code> edite o arquivo <code>/etc/hostname</code> com o comando:</p>
+<pre><code>nano /etc/hostname
+</code></pre>
+<pre><code>srvfile.seu.dominio
+</code></pre>
+<p><strong>Salve o Arquivo</strong></p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<hr />
+<h3 id="editar-o-arquivo-etcnsswitchconf">Editar o arquivo <strong><code>/etc/nsswitch.conf</code></strong></h3>
+<p>Com o editor de textos <code>nano</code> edite o arquivo <strong>/etc/nsswitch.conf</strong> com o comando:</p>
+<pre><code>nano /etc/nsswitch.conf
+</code></pre>
+<p><strong>Localize as Linhas e Mude a configuração:</strong></p>
+<pre><code>De:
+passwd: sss files systemd
+
+Para:
+passwd: files winbind
+
+
+De:
+group: sss files systemd
+
+Para:
+group: files winbind
+</code></pre>
+<p><strong>Salve o arquivo</strong></p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<hr />
+<h3 id="configure-a-rede">Configure a Rede</h3>
+<p>Configure a rede e insira os dados do <code>DNS</code> sendo o IP do  seu <code>DC1</code> ou seja, do seu Controlador de domínio <code>DC1</code>. Execute o comando <code>nmtui</code>:</p>
+<pre><code>nmtui
+</code></pre>
+<p>Selecione <code>Editar uma Conexão</code></p>
+<p>Digite <code>Enter</code></p>
+<p>Com a tela <code>Tab</code> selecione <code>Editar</code></p>
+<p>Com as <code>teclas de direção (setas)</code> mova-se até <code>Servidores DNS</code> e troque o <code>IP para o IP de seu AD DC</code> (controlador de domínio-<code>DC1</code>)</p>
+<p>Ainda com as setas de direção, selecione <code>Domínios de pesquisa</code> e insira: <code>seu.domínio</code></p>
+<p>Então, selecione <code>OK</code> <code>com as setas de direção</code> e digite <code>enter</code>.</p>
+<p>Com a <code>tecla Tab</code>, selecione a opção: <code>voltar</code> e digite a tecla <code>enter</code>.  Com a tecla <code>Tab</code>, selecione a <code>opção OK</code> e digite <code>enter</code>.</p>
+<hr />
+<h3 id="reinicie-o-sistema">Reinicie o sistema</h3>
+<p>Execute o comando <code>reboot</code> para reiniciar o sistema</p>
+<pre><code>reboot
+</code></pre>
+<hr />
+<h3 id="arquivo-usermap">Arquivo <code>user.map</code></h3>
+<p>Crie e edite o arquivo <strong>user.map</strong> no diretório <code>/etc/samba</code> com o conteúdo:</p>
+<pre><code>nano /etc/samba/user.map
+</code></pre>
+<pre><code>!root = DOMINIO\Administrator
+</code></pre>
+<p><strong>Salve o arquivo</strong></p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<hr />
+<h3 id="backup-do-arquivo-original-smbconf">Backup do arquivo original <code>smb.conf</code></h3>
+<p>Crie um backup do arquivo <code>/etc/samba/smb.conf</code> com o comando:</p>
+<pre><code>mv /etc/samba/smb.conf /etc/samba/smb.conf.bkp
+</code></pre>
+<hr />
+<h3 id="verificar-dispositivo-de-rede">Verificar dispositivo de rede</h3>
+<p>Veifique seu dispositivo de rede, pois  o mesmo será inserido no arquivo que será criado. Execute o comando:</p>
+<pre><code>ip a
+</code></pre>
+<pre><code>2: enp1s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 52:54:00:fc:1d:33 brd ff:ff:ff:ff:ff:ff
+    inet 10.1.1.41/24 brd 10.1.1.255 scope global noprefixroute enp1s0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::5054:ff:fefc:1d33/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+</code></pre>
+<p>Seu dispositivo neste caso é o: <strong>enp1s0</strong></p>
+<hr />
+<h3 id="crie-e-edite-o-arquivo-smbconf">Crie e edite o arquivo <code>smb.conf</code></h3>
+<p>Vamos criar e editar o arquivo <code>/etc/samba/smb.conf.</code> <code>Copie</code> e <code>cole</code>o conteúdo para seu arquivo e não esqueça de <code>alterar</code> conforme suas informações. Execute o comando:</p>
+<pre><code>nano /etc/samba/smb.conf
+</code></pre>
+<pre><code>[global]
+    bind interfaces only = Yes
+    interfaces = lo enp1s0 # sua interface
+    dedicated keytab file = /etc/krb5.keytab
+    kerberos method = secrets and keytab
+    log file = /var/log/samba/%m.log
+    min domain uid = 0
+    realm = SEU.DOMINIODE       
+    username map = /etc/samba/user.map
+    security = ADS
+    template homedir = /home/%U
+    template shell = /bin/bash
+    winbind refresh tickets = Yes
+    winbind use default domain = Yes
+    workgroup = DOMINIO
+    idmap config dominio : range = 10000-999999
+    idmap config dominio : backend = rid
+    idmap config * : range = 3000-7999
+    idmap config * : backend = tdb
+    map acl inherit = Yes
+    vfs objects = acl_xattr
+</code></pre>
+<p>Salve o arquivo</p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<hr />
+<h3 id="backup-do-arquivo-krb5conf">Backup do arquivo <code>krb5.conf</code></h3>
+<p>Faça uma cópia do arquivo <code>/etc/krb5.conf</code> com o comando:</p>
+<pre><code>mv /etc/krb5.conf /etc/krb5.conf.bkp
+</code></pre>
+<hr />
+<h3 id="crie-um-novo-arquivo-krb5conf">Crie um novo arquivo <code>krb5.conf</code></h3>
+<p>Crie e edite um novo arquivo <code>krb5.conf</code> e insira as linhas <code>alterando</code> para seu cenário. Utilize o comando:</p>
+<pre><code>nano /etc/krb5.conf
+</code></pre>
+<pre><code>[libdefaults]
+    dns_lookup_realm = false
+    dns_lookup_kdc = true
+    default_realm = SEU.DOMINIO
+</code></pre>
+<p><strong>Salve o arquivo</strong></p>
+<p>Para salvar: <code>control+o</code>e para sair: <code>control+x</code></p>
+<hr />
+<h3 id="comando-testparm">Comando <code>testparm</code></h3>
+<p>Verifique se existe algum erro de sintaxe com o comando:</p>
+<pre><code>testparm
+</code></pre>
+<p>Se não houver erros, execute o comando para <code>recarregar</code> o samba novamente:</p>
+<pre><code>smbcontrol all reload-config
+</code></pre>
+<hr />
+<h3 id="desabilite-o-selinux">Desabilite o <strong><code>SELinux</code></strong></h3>
+<p>Com o editor de textos <code>nano</code> edite e altere o arquivo </p>
+<pre><code>nano /etc/selinux/config
+</code></pre>
+<pre><code>Na linha `SELINUX=enforcing`
+troque para:
+SELINUX=disabled
+
+Salve o arquivo
+</code></pre>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<hr />
+<h3 id="ajuste-o-firewall">Ajuste o Firewall</h3>
+<p>Ajuste o Firewall, adicione o <code>serviço</code> do <code>samba</code> e recarregue o Firewall com os comandos abaixo:</p>
+<pre><code>firewall-cmd --add-service=samba --permanent
+firewall-cmd --reload
+</code></pre>
+<hr />
+<h3 id="reiniciar-o-servidor"><code>Reiniciar</code> o servidor</h3>
+<p>Reinicie o servidor de arquivos com o comando:</p>
+<pre><code>reboot
+</code></pre>
+<hr />
+<h3 id="junte-se-ao-ad-dc1-join-ad">Junte-se ao AD-DC1 (join AD)</h3>
+<p>Utilize o comando abaixo para juntar-se ao seu Controlador de Domínio Principal <strong>DC1</strong>:</p>
+<pre><code>net ads join -U administrator  
+Enter administrator's password: senha do provisionamento
+</code></pre>
+<pre><code>Using short domain name -- DOMINIO  
+Joined 'SRVFILE' to dns domain 'seu.dominio'
+</code></pre>
+<hr />
+<h3 id="verifique-a-conexao-netlogon"><code>Verifique</code> a conexão NETLOGON</h3>
+<p>Verifique a conexão <code>Netlogon</code> com o AD. Utilize o comando:</p>
+<pre><code>wbinfo --ping-dc
+</code></pre>
+<p>A saída do comando deve parecer como esta abaixo:</p>
+<pre><code>checking the NETLOGON for domain[DOMINIO] dc connection to &quot;DC1.seu.dominio&quot; succeeded
+</code></pre>
+<hr />
+<h3 id="nslookup">Nslookup</h3>
+<p>Verifique se o seu <code>DC1</code> (seu controlador de dominio principal) retorna com a resposta, executando o comando: <code>nslookup SEU.DOMINIO</code>. <code>Altere</code> os dados conforme seu cenário:</p>
+<pre><code>nslookup DC1.SEU.DOMINIO
+</code></pre>
+<p>Um resultado parecido como abaixo deve aparecer na tela:</p>
+<pre><code>nslookup DC1.seu.dominio
+Server: 10.1.1.31
+Address: 10.1.1.31#53
+
+Name: DC1.seu.dominio
+Address: 10.1.1.31
+</code></pre>
+<p>Também através do <code>IP do seu DC1</code> com o comando:</p>
+<pre><code>nslookup IP-serverad
+</code></pre>
+<hr />
+<p>Antes de prosseguir, <strong>conecte-se</strong> em seu <strong>DC1</strong> e <code>crie</code> um <code>grupo</code> e um <code>usuário</code>. No <strong>DC1</strong> execute o comando para criar o <code>grupo</code> por exemplo:</p>
+<pre><code>samba-tool group add 'Linux Domain'
+</code></pre>
+<p>Logo após <code>adicione</code> um <code>usuário</code> com o comando:</p>
+<pre><code>samba-tool user add 'Linux Test'
+</code></pre>
+<hr />
+<h2 id="volte-para-o-servidor-de-arquivos">Volte para o Servidor de Arquivos</h2>
+<h3 id="gid-grupo-a-partir-do-servidor-de-arquivos">GID grupo a partir do <code>Servidor de Arquivos</code></h3>
+<p>Verifique se retorna o <code>GID (número do Grupo)</code> criado. Utilize o comando abaixo. A saída deve ser algo parecido como:</p>
+<pre><code>getent group &quot;DOMINIO\\Linux Domain&quot;
+linux domain:x:11115:
+</code></pre>
+<hr />
+<h3 id="garantir-privilegios">Garantir Privilégios</h3>
+<p>Garanta o privilégio de acesso para o usuário <strong>Administrator</strong> estar apto a <code>ler/escrever/apagar</code> dentro do disco. <strong>OBS</strong>: <strong>Altere o comando</strong> conforme seu cenário. Utilize o comando:</p>
+<pre><code>net rpc rights grant &quot;DOMINIO\Domain Admins&quot; SeDiskOperatorPrivilege -U &quot;DOMINIO\Administrator&quot;
+Enter DOMINIO\Administrator password: senha CRIADA no provisionamento do DC1
+# Caso tenha criado corretamente o sistema irá dar sucesso do comando
+
+Successfully granted rights.
+</code></pre>
+<p>Recebendo a resposta como sucesso, está apto a iniciar a configuração de <code>montagem de disco</code>, o <code>diretório</code> escolhido para abrigar seus arquivos e ajustar as <code>permissões</code> de acesso, para que seja possível fazer a <code>Administração</code> através da <code>Ferramenta RSAT do seu Windows</code>.</p>
+<hr />
+<p><strong>Por Exemplo</strong>:</p>
+<p>Caso tenha configurado um disco e <code>disponibilizou/montou</code> o diretório: <strong>/srv/ad</strong>, é necessário indicar esse caminho em seu arquivo <strong>smb.conf</strong> , que está no diretório: <code>/etc/samba/smb.conf</code>.  Dentro do arquivo, localize a sessão <strong>global</strong>, indicando o <code>nome de seu compartilhamento</code> do servidor de arquivos, <code>caminho</code> e então ajuste as <code>permissões de acesso</code> seguindo o exemplo abaixo:</p>
+<p><code>OBS: Altere os dados conforme seu cenário</code></p>
+<pre><code>nano /etc/samba/smb.conf
+</code></pre>
+<pre><code>[arqTeste]
+   path = /srv/ad/
+   read only = no
+   browseable = yes
+</code></pre>
+<p>Salve o arquivo</p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<hr />
+<h3 id="ajustando-permissoes">Ajustando Permissões</h3>
+<p>Ajuste as <code>permissões</code> para o Grupo no diretório criado. Utilize os comandos:</p>
+<pre><code>chown root:&quot;Domain Admins&quot; /srv/ad
+chmod 0770 -R /srv/ad
+</code></pre>
+<hr />
+<h3 id="recarregar-o-samba"><code>Recarregar</code> o samba</h3>
+<p>Recarregue novamente o <code>smbcontrol</code>com o comando:</p>
+<pre><code>smbcontrol all reload-config
+</code></pre>
+<hr />
+<h3 id="rsat-windows">RSAT Windows</h3>
+<p>Através do Windows, logue-se com a conta <code>Administrator</code> e através do RSAT inicie suas configurações desejadas.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>

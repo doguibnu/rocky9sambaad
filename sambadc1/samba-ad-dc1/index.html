@@ -1,0 +1,1327 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../../samba-dc2/sambadc2/">
+      
+      <link rel="icon" href="../../favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>Samba AD-DC1 - Rocky Linux 9.x AD-DC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.eebd395e.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Jost";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#instalar-samba-ad-dc-dc1-controlador-de-dominio-principal" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Rocky Linux 9.x AD-DC" class="md-header__button md-logo" aria-label="Rocky Linux 9.x AD-DC" data-md-component="logo">
+      
+  <img src="../../icons896.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Rocky Linux 9.x AD-DC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Samba AD-DC1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/doguibnu/rocky9sambaad" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    doguibnu/Rocky9-Samba-AD-DC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Rocky Linux 9.x AD-DC" class="md-nav__button md-logo" aria-label="Rocky Linux 9.x AD-DC" data-md-component="logo">
+      
+  <img src="../../icons896.png" alt="logo">
+
+    </a>
+    Rocky Linux 9.x AD-DC
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/doguibnu/rocky9sambaad" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    doguibnu/Rocky9-Samba-AD-DC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Rocky-Samba
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Samba AD-DC1
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Samba AD-DC1
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#inciando-o-processo" class="md-nav__link">
+    Inciando o processo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifique-a-rede" class="md-nav__link">
+    Verifique a rede
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editar-o-arquivo-etchost" class="md-nav__link">
+    Editar o arquivo /etc/host:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#algum-samba-esta-rodando" class="md-nav__link">
+    Algum Samba está rodando?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remova-o-arquivo-krb5conf" class="md-nav__link">
+    Remova o arquivo krb5.conf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instale-os-repositorios-de-plugins-crb-e-epel" class="md-nav__link">
+    Instale os repositórios de Plugins CRB e Epel
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setar-servidor-ntp-horario" class="md-nav__link">
+    Setar servidor NTP (horário):
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instale-dependencias-necessarias" class="md-nav__link">
+    Instale dependências necessárias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-do-samba-4195" class="md-nav__link">
+    Download do Samba (4.19.5)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compilar-o-samba" class="md-nav__link">
+    Compilar o Samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comandos-make-e-make-install" class="md-nav__link">
+    Comandos make e make install
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execute-o-samba-de-qualquer-diretorio" class="md-nav__link">
+    Execute o samba de qualquer diretório
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servico-systemd-samba" class="md-nav__link">
+    Serviço Systemd Samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-dispositivo-de-rede" class="md-nav__link">
+    Verificar dispositivo de rede
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desabilitar-selinux" class="md-nav__link">
+    Desabilitar SELinux
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reboot-o-sistema" class="md-nav__link">
+    Reboot o sistema
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provisionar-o-samba" class="md-nav__link">
+    Provisionar o Samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-o-arquivo-krb5conf" class="md-nav__link">
+    Configure o arquivo krb5.conf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restart-o-servico-do-samba-ad-dc-com-o-comando" class="md-nav__link">
+    Restart o serviço do samba-ad-dc com o comando:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-versao-do-samba" class="md-nav__link">
+    Verificar versão do samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testar-o-samba" class="md-nav__link">
+    Testar o samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-o-dns-ldap" class="md-nav__link">
+    Verificar o DNS (ldap)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-kerberos" class="md-nav__link">
+    Verificar kerberos
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-a-gravacao-a" class="md-nav__link">
+    Verificar a Gravação A
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-a-autenticacao-do-kerberos" class="md-nav__link">
+    Verificar a autenticação do Kerberos
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#listar-o-cache-dos-tickets" class="md-nav__link">
+    Listar o cache dos tickets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-o-firewall" class="md-nav__link">
+    Configure o Firewall
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replicacao-do-sysvol" class="md-nav__link">
+    Replicação do SysVol
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../samba-dc2/sambadc2/" class="md-nav__link">
+        Samba AD-DC2 Replicador
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fileserver/fileserver/" class="md-nav__link">
+        Servidor de Arquivos
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../win11/Windows11/" class="md-nav__link">
+        Windows 11 RSAT
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../thanks/thanks/" class="md-nav__link">
+        Agradecimentos
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#inciando-o-processo" class="md-nav__link">
+    Inciando o processo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifique-a-rede" class="md-nav__link">
+    Verifique a rede
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editar-o-arquivo-etchost" class="md-nav__link">
+    Editar o arquivo /etc/host:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#algum-samba-esta-rodando" class="md-nav__link">
+    Algum Samba está rodando?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remova-o-arquivo-krb5conf" class="md-nav__link">
+    Remova o arquivo krb5.conf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instale-os-repositorios-de-plugins-crb-e-epel" class="md-nav__link">
+    Instale os repositórios de Plugins CRB e Epel
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setar-servidor-ntp-horario" class="md-nav__link">
+    Setar servidor NTP (horário):
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instale-dependencias-necessarias" class="md-nav__link">
+    Instale dependências necessárias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-do-samba-4195" class="md-nav__link">
+    Download do Samba (4.19.5)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compilar-o-samba" class="md-nav__link">
+    Compilar o Samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comandos-make-e-make-install" class="md-nav__link">
+    Comandos make e make install
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execute-o-samba-de-qualquer-diretorio" class="md-nav__link">
+    Execute o samba de qualquer diretório
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servico-systemd-samba" class="md-nav__link">
+    Serviço Systemd Samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-dispositivo-de-rede" class="md-nav__link">
+    Verificar dispositivo de rede
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desabilitar-selinux" class="md-nav__link">
+    Desabilitar SELinux
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reboot-o-sistema" class="md-nav__link">
+    Reboot o sistema
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provisionar-o-samba" class="md-nav__link">
+    Provisionar o Samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-o-arquivo-krb5conf" class="md-nav__link">
+    Configure o arquivo krb5.conf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restart-o-servico-do-samba-ad-dc-com-o-comando" class="md-nav__link">
+    Restart o serviço do samba-ad-dc com o comando:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-versao-do-samba" class="md-nav__link">
+    Verificar versão do samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testar-o-samba" class="md-nav__link">
+    Testar o samba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-o-dns-ldap" class="md-nav__link">
+    Verificar o DNS (ldap)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-kerberos" class="md-nav__link">
+    Verificar kerberos
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-a-gravacao-a" class="md-nav__link">
+    Verificar a Gravação A
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verificar-a-autenticacao-do-kerberos" class="md-nav__link">
+    Verificar a autenticação do Kerberos
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#listar-o-cache-dos-tickets" class="md-nav__link">
+    Listar o cache dos tickets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-o-firewall" class="md-nav__link">
+    Configure o Firewall
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replicacao-do-sysvol" class="md-nav__link">
+    Replicação do SysVol
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="instalar-samba-ad-dc-dc1-controlador-de-dominio-principal">Instalar Samba AD-DC (DC1)  <mark>Controlador de Domínio Principal </mark></h1>
+<h2 id="inciando-o-processo">Inciando o processo</h2>
+<p>No ínicio da instalação do sistema, podemos inserir alguns dados como: <code>IP estático</code>, <code>DNS</code> e <code>Domínio</code> como mostra a figura abaixo:</p>
+<p><img alt="alt+text" src="../01-conf01-05.png" /></p>
+<p>Continuando, temos a segunda tela para verifcação dos dados inseridos:</p>
+<p><img alt="alt + text" src="../02-tela-rede09.png" /></p>
+<p>No <strong>resumo da instalação</strong> crie um <code>usuário e senha do sistema</code>. Crie também uma senha para o usuário <code>root</code> e Inicie a Instalação</p>
+<p><img alt="alt+text" src="../03-tela-inst-sistema.png" /></p>
+<hr />
+<p><strong>ATENÇÃO</strong>: <strong>TODOS</strong> os comandos utilizados serão como usuário <code>root.</code> </p>
+<p>Com o sistema instalado, teremos uma tela parecida como esta abaixo:</p>
+<p><img alt="alt + text" src="../04root-93.png" /></p>
+<p>Após ter logado no sistema, vamos <code>atualizar</code> e <code>remover</code> pacotes que não serão utilizados. Execute o comando: </p>
+<pre><code>dnf update -y &amp;&amp; dnf autoremove -y
+</code></pre>
+<p>Instale o utilitário <code>wget</code> e o editor de textos <code>nano</code> com o comando:</p>
+<pre><code>dnf install -y wget nano
+</code></pre>
+<hr />
+<h2 id="verifique-a-rede">Verifique a rede</h2>
+<p>Verifique sua <strong>configuração de rede</strong> . Seu controlador de domínio deve possuir  um endereço de <code>IP fixo</code>, ou seja, estático, máscara de <code>sub-rede</code>, deve possuir um <code>IP de DNS</code>, um <code>Gateway</code> e o nome de <code>seu.dominio</code>. Uma das formas para configurar a rede pode ser através do <strong>terminal</strong>,  executando o comando que abre uma <code>GUI</code>:</p>
+<pre><code>nmtui
+</code></pre>
+<p>Selecione <code>Editar uma conexão.</code></p>
+<p>Selecione a opção <code>Editar.</code></p>
+<p>Configure seu <code>endereço ip</code> , máscara de <code>Sub-rede</code> e seu <code>Gateway</code>.</p>
+<p>Na opção <code>Servidor DNS</code>: inserir <strong>o IP de DNS</strong> desejado .</p>
+<p>Não esqueça de inserir em <code>Domínios de pesquisa: seu.domínio</code>.</p>
+<p>Com as teclas de direção vá até o fim e selecione <code>OK</code> para salvar.</p>
+<p>Selecione <code>Voltar</code> e então no menu: <code>selecionar</code>  escolher a opção: <code>Definir nome de máquina do sistema</code>:<code>dc1.seu.dominio</code>.</p>
+<p>Agora selecione a opção: <code>OK</code>  para salvar. Novamente selecione <code>OK</code>. Deve retornar para o <code>terminal</code> do sistema.</p>
+<hr />
+<h2 id="editar-o-arquivo-etchost">Editar o arquivo <code>/etc/host</code>:</h2>
+<p>No <code>terminal</code> execute o comando:</p>
+<pre><code>nano /etc/hosts
+</code></pre>
+<p>Insira os dados referentes ao seu servidor:</p>
+<pre><code>127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+# inserir os dados de seu server DC
+10.1.1.120  dc1                             dc1.seu.dominio
+</code></pre>
+<p><strong>Onde:</strong></p>
+<p><code>10.1.1.120</code> =  É o endereço IP de seu próprio <code>AD-DC</code> (controlador de domínio)</p>
+<p><code>dc1</code>  = É nome simplificado do seu <strong>host</strong> controlador de domínio</p>
+<p><code>dc1.seu.domínio</code> = <code>nome do host</code> + <code>seu.domínio</code></p>
+<hr />
+<h2 id="algum-samba-esta-rodando">Algum Samba está rodando?</h2>
+<p>Verifique se existe algum processo do samba rodando. Utilize o comando:</p>
+<pre><code>ps ax | egrep &quot;samba|smbd|nmbd|winbindd&quot;
+</code></pre>
+<p>Remova qualquer configuração de arquivo: <code>smb.conf</code> que houver, checando com o comando:</p>
+<pre><code>smbd -b | grep &quot;CONFIGFILE&quot;
+# O resultado pode ser parecido com a linha abaixo:
+-bash: smbd: command not found
+</code></pre>
+<hr />
+<h2 id="remova-o-arquivo-krb5conf">Remova o arquivo <code>krb5.conf</code></h2>
+<p>Remova o arquivo <strong>/etc/krb5.conf</strong> com o comando:</p>
+<pre><code>rm /etc/krb5.conf
+</code></pre>
+<hr />
+<h2 id="instale-os-repositorios-de-plugins-crb-e-epel">Instale os repositórios de Plugins <code>CRB</code> e <code>Epel</code></h2>
+<p>Instale os plugins habilitando o repositório <code>CRB</code>. Instale também o repositório <code>epel release</code> e execute um <code>update</code> com os comandos abaixo:</p>
+<pre><code>dnf config-manager --enable crb &amp;&amp; dnf install epel-release -y &amp;&amp; dnf update -y
+</code></pre>
+<p><code>Cheque</code> os repositórios adicionados com o comando:</p>
+<pre><code>dnf repolist
+</code></pre>
+<p>O resultado deve ser algo como:</p>
+<p><img alt="alt +text" src="../tela-repo2.png" /></p>
+<hr />
+<h2 id="setar-servidor-ntp-horario">Setar servidor NTP (horário):</h2>
+<p>Listando as opções de hora local.</p>
+<pre><code>timedatectl list-timezones
+</code></pre>
+<p>Para setar o <code>timezone</code> desejado, use o comando: </p>
+<pre><code>timedatectl set-timezone America/Sao_Paulo 
+</code></pre>
+<p>Verifique o <code>timezone</code> setado:</p>
+<pre><code>timedatectl
+</code></pre>
+<p>O resultado deve parecer como abaixo:</p>
+<pre><code>Local time: qua 2023-04-12 09:04:22 -03
+           Universal time: qua 2023-04-12 12:04:22 UTC
+                 RTC time: qua 2023-04-12 12:00:16
+                Time zone: America/Sao_Paulo (-03, -0300)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no 
+</code></pre>
+<hr />
+<h2 id="instale-dependencias-necessarias">Instale dependências necessárias</h2>
+<p>Instale as dependências necessárias para compilar e instalar o samba. Crie um arquivo do tipo <code>script executável</code> e insira os comandos. No <code>terminal</code>, execute o editor de textos <code>nano</code> com o nome desejado do arquivo:</p>
+<pre><code>nano depende.sh
+</code></pre>
+<p><code>Copie</code> e <code>Cole</code> as linhas abaixo para o seu arquivo:</p>
+<pre><code>set -xueo pipefail
+
+dnf install -y yum-utils
+dnf update -y
+
+yum install -y \
+gcc.x86_64 \
+krb5-workstation.x86_64 \
+tar \
+bind \
+bind-utils \
+python3-devel \
+wget \
+nano \
+perl.x86_64 perl-Parse-Yapp.noarch \
+libacl.x86_64 \
+nfs4-acl-tools.x86_64 \
+gnutls-devel.x86_64 \
+zlib.x86_64 \
+krb5-devel.x86_64 \
+krb5-server \
+libblkid.x86_64 \
+dbus-devel.x86_64 \
+jansson-devel.x86_64 \
+readline.x86_64 \
+bsdtar.x86_64 \
+docbook-dtds.noarch \
+pam-devel \
+cups \
+python3-markdown \
+patchutils.x86_64 \
+gpgme-devel \
+flex \
+python3-iso8601.noarch \
+python3-cryptography.x86_64 \
+python3.11-devel.x86_64 \
+lmdb.x86_64 \
+libarchive-devel \
+libacl-devel \
+openldap-devel \
+python3-dns \
+perl-Convert-ASN1.noarch \
+rpcgen.x86_64 \
+perl-App-cpanminus \
+popt-devel.x86_64 \
+zlib-devel.x86_64 \
+lmdb-devel.x86_64 \
+bison-devel.x86_64 \
+libtasn1-tools \
+bison \
+perl-JSON \
+bzip2-devel \
+openssl-devel \
+
+yum autoremove -y
+
+yum clean all
+</code></pre>
+<p><strong>Salve o arquivo</strong></p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<p>Transforme o arquivo criado em um arquivo <code>executável</code> com o comando:</p>
+<pre><code>chmod +x depende.sh
+</code></pre>
+<p>Vamos executar o arquivo para que o mesmo instale as dependências necessárias. Execute o arquivo com o comando:</p>
+<pre><code>./depende.sh 
+</code></pre>
+<hr />
+<h2 id="download-do-samba-4195">Download do Samba (4.19.5)</h2>
+<p>Faça o download do samba ou da versão desejada, utilizando o comando:</p>
+<pre><code>wget https://download.samba.org/pub/samba/stable/samba-4.19.5.tar.gz
+</code></pre>
+<p>Descompacte o arquivo utilizando o comando:</p>
+<pre><code>tar -zxvf samba-nome-arquivo
+</code></pre>
+<p>Mude para o diretório onde foi descompactado:</p>
+<pre><code>cd samba-nome-arquivo/
+</code></pre>
+<hr />
+<h2 id="compilar-o-samba">Compilar o Samba</h2>
+<p>Compile o samba e faça o arquivo de configuração (<code>smb.conf</code>)  ser gravado no diretório: <strong>/etc/samba/smb.conf</strong> . Execute o comando:</p>
+<pre><code>./configure --sysconfdir=/etc/samba/
+</code></pre>
+<p><strong>Aguarde</strong> o processo finalizar.</p>
+<p>Se não houver nenhum erro, ao final, deve aparecer um resultado como a figura abaixo:</p>
+<p><img alt="alt+text" src="../compilar-samba-ok38.png" /></p>
+<hr />
+<h2 id="comandos-make-e-make-install">Comandos <code>make</code> e <code>make install</code></h2>
+<p>Para finalizar a instalação do Samba execute os comandos <code>make</code> e <code>make install</code>:</p>
+<pre><code>make &amp;&amp; make install
+</code></pre>
+<p><strong>Atenção</strong>: este processo pode demorar dependendo de seu hardware. <strong>Aguarde!</strong> </p>
+<p>Se não houver nenhum erro, ao final, deve aparecer um resultado parecido com a figura abaixo:</p>
+<p><img alt="alt+text" src="../instalar-samba-ok22.png" /> </p>
+<hr />
+<h2 id="execute-o-samba-de-qualquer-diretorio">Execute o <code>samba</code> de qualquer diretório</h2>
+<p>Mude para o diretório <strong>/root</strong> e edite o arquivo: <code>.bash_profile</code> com os comandos:</p>
+<pre><code>cd /root
+nano .bash_profile
+</code></pre>
+<p>Insira a linha:</p>
+<pre><code> .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+# ESTA LINHA
+PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH
+
+export PATH
+</code></pre>
+<p><strong>Salve o arquivo</strong></p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code> </p>
+<hr />
+<h2 id="servico-systemd-samba">Serviço <code>Systemd</code> Samba</h2>
+<p>Antes de criar o arquivo de serviço systemd do samba execute os comandos:</p>
+<pre><code> systemctl mask smbd nmbd winbind
+ systemctl disable smbd nmbd winbind
+</code></pre>
+<p>Crie o arquivo em: <code>/etc/systemd/system/samba-ad-dc.service</code> com o editor de textos <code>nano</code> </p>
+<pre><code>nano /etc/systemd/system/samba-ad-dc.service
+</code></pre>
+<p>Contendo as seguintes linhas (<code>copie</code> e <code>cole</code> para seu arquivo):</p>
+<pre><code>[Unit]
+Description=Samba Active Directory Domain Controller
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/samba/sbin/samba -D
+PIDFile=/usr/local/samba/var/run/samba.pid
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p><strong>Salve o arquivo</strong></p>
+<p>Para salvar: <code>control+o</code> e para sair: <code>control+x</code></p>
+<hr />
+<p>Recarregue o <code>systemd</code> com o comando:</p>
+<pre><code>systemctl daemon-reload
+</code></pre>
+<p>Habilite o <code>samba-ad-dc</code> para iniciar no <code>boot</code> do sistema:</p>
+<pre><code>systemctl enable samba-ad-dc
+</code></pre>
+<hr />
+<h2 id="verificar-dispositivo-de-rede">Verificar dispositivo de rede</h2>
+<p>Verifique em qual dispositivo de rede está sua conexão. No <code>terminal</code> execute o comando:</p>
+<pre><code>ip a
+</code></pre>
+<p>O resultado deve ser parecido como abaixo:</p>
+<pre><code>2: ens18: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether de:1e:07:63:42:51 brd ff:ff:ff:ff:ff:ff
+    altname enp0s18
+    inet 10.1.1.120/24 brd 10.1.1.255 scope global noprefixroute ens18
+</code></pre>
+<p><strong>OBS</strong>: o <strong>ens18</strong> neste caso é seu dispositivo de rede</p>
+<hr />
+<h2 id="desabilitar-selinux">Desabilitar SELinux</h2>
+<p>Edite o arquivo <code>/etc/selinux/config</code>  com o editor nano:</p>
+<pre><code>nano /etc/selinux/config
+</code></pre>
+<p>Encontre a linha e mude para <code>disabled</code> como mostra abaixo:</p>
+<pre><code># disabled - No SELinux policy is loaded.
+SELINUX=disabled
+</code></pre>
+<p>Salve o arquivo:</p>
+<p>Para salvar: <code>control+o</code> e para sair <code>control+x</code></p>
+<hr />
+<h2 id="reboot-o-sistema">Reboot o sistema</h2>
+<p>Faça um <code>reboot</code> do sistema com o comando:</p>
+<pre><code>reboot
+</code></pre>
+<hr />
+<h2 id="provisionar-o-samba">Provisionar o Samba</h2>
+<p>Vamos Provisionar o Samba. No <strong>terminal</strong> execute o comando:</p>
+<p><code>Obs: não esqueça de alterar para o seu dispositivo de rede</code></p>
+<pre><code>samba-tool domain provision --use-rfc2307 --interactive --option=&quot;interfaces= lo ens18&quot; --option=&quot;bind interfaces only=yes&quot;
+</code></pre>
+<p>Responda as <code>questões</code> referente <strong>ao seu cenário</strong>:</p>
+<pre><code>Realm: SEU.Dominio 
+Domain [AD]: Domínio  
+Server Role (dc, member, standalone) [dc]: dc 
+DNS backend (SAMBA_INTERNAL, BIND9_FLATFILE, BIND9_DLZ, NONE) SAMBA_INTERNAL]: SAMBA_INTERNAL 
+DNS forwarder IP address (write 'none' to disable forwarding) [SEU_IP_DNS]:IP DNS  
+Administrator password: escolher uma senha  
+Retype password: repetir a mesma senha
+</code></pre>
+<p><strong>OBS:</strong> Guarde a senha de provisionamento</p>
+<hr />
+<h2 id="configure-o-arquivo-krb5conf">Configure o arquivo <code>krb5.conf</code></h2>
+<p>Execute o comando abaixo:</p>
+<pre><code>cp /usr/local/samba/private/krb5.conf /etc/krb5.conf
+</code></pre>
+<hr />
+<h2 id="restart-o-servico-do-samba-ad-dc-com-o-comando"><code>Restart</code> o serviço do <code>samba-ad-dc</code> com o comando:</h2>
+<pre><code>systemctl restart samba-ad-dc
+</code></pre>
+<p>Para <code>parar</code> serviço fazer o comando:</p>
+<pre><code>systemctl stop samba-ad-dc
+</code></pre>
+<p>Se necessitar <code>desabilitar</code> o serviço, utilizar o comando:</p>
+<pre><code>systemctl disable samba-ad-dc
+</code></pre>
+<hr />
+<h2 id="verificar-versao-do-samba">Verificar <code>versão</code> do samba</h2>
+<pre><code>smbclient --version
+</code></pre>
+<hr />
+<h2 id="testar-o-samba"><code>Testar</code> o samba</h2>
+<pre><code>smbclient -L localhost -U%
+</code></pre>
+<hr />
+<h2 id="verificar-o-dns-ldap">Verificar o <strong>DNS</strong> (<code>ldap</code>)</h2>
+<pre><code>host -t SRV _ldap._tcp.seu.dominio
+</code></pre>
+<hr />
+<h2 id="verificar-kerberos">Verificar <strong><code>kerberos</code></strong></h2>
+<pre><code> host -t SRV _kerberos._udp.seu.dominio.
+</code></pre>
+<hr />
+<h2 id="verificar-a-gravacao-a">Verificar a <code>Gravação A</code></h2>
+<pre><code>host -t A seu.dominio
+</code></pre>
+<hr />
+<h2 id="verificar-a-autenticacao-do-kerberos">Verificar a <code>autenticação</code> do Kerberos</h2>
+<p>A senha utilizada será sua senha inserida no provisionamento do samba. Execute o comando abaixo: </p>
+<pre><code>kinit Administrator
+Password for Administrator@SEU.DOMINIO:
+Warning: Your password will expire in 41 days on Tue 22 Sep 2020 03:41:22 PM IST
+</code></pre>
+<hr />
+<h2 id="listar-o-cache-dos-tickets"><code>Listar</code> o cache dos tickets</h2>
+<p>Liste o cache dos tickets com o comando:</p>
+<pre><code>klist
+</code></pre>
+<p>A resposta deve ser parecida com essa:</p>
+<pre><code>Valid starting       Expires              Service principal
+13/04/2023 13:54:57  13/04/2023 23:54:57  krbtgt/SEU.DOMINIO@SEU.DOMINIO
+    renew until 14/04/2023 13:54:50
+</code></pre>
+<hr />
+<h2 id="configure-o-firewall">Configure o Firewall</h2>
+<p>Adicione os <code>serviços: dns, ldap, ldaps e kerberos</code> com o comando:</p>
+<pre><code>firewall-cmd --add-service={dns,ldap,ldaps,kerberos}
+</code></pre>
+<p>Abra as portas <code>TCP</code> utilizadas pelo samba:</p>
+<pre><code>firewall-cmd --permanent --zone=public --add-port={53/tcp,88/tcp,135/tcp,139/tcp,389/tcp,445/tcp,464/tcp,636/tcp,3268/tcp,3269/tcp,49152-65535/tcp};
+</code></pre>
+<p>Abra as portas <code>UDP</code> utilizadas pelo samba:</p>
+<pre><code>firewall-cmd --permanent --zone=public --add-port={53/udp,88/udp,123/udp,137/udp,138/udp,389/udp,464/udp};
+</code></pre>
+<p><code>Recarregue</code> o Firewall com o comando:</p>
+<pre><code>firewall-cmd --reload
+</code></pre>
+<hr />
+<h2 id="replicacao-do-sysvol">Replicação do SysVol</h2>
+<p>Replicar o <strong>SysVol</strong> (backup do AD-DC1) para um <strong>Segundo Controlador de Domínio:</strong> <strong>DC2</strong>. <strong>Para fazer o segundo DC2</strong> <a href="/samba-dc2/sambadc2/">clique aqui</a> .</p>
+<p>Gere uma chave <code>ssh</code> com o comando: <code>ssh-keygen</code> no <code>Primeiro Controlador de Domínio</code> <strong>DC1</strong> com o comando:</p>
+<pre><code>ssh-keygen -t rsa
+</code></pre>
+<p>Algumas perguntas serão feitas, como estas abaixo:</p>
+<p>Onde salvar o arquivo de chave, que neste caso: <strong>(/root/.ssh/id_rsa)</strong>: tecle <strong>enter</strong></p>
+<p>Entre com uma senha (<strong>ou apenas digite enter para ficar sem senha</strong>): tecle <strong>enter</strong></p>
+<p>Entre com a senha novamente. <strong>Apenas</strong>: tecle <strong>enter</strong></p>
+<p>A saída será algo como:</p>
+<pre><code>Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+</code></pre>
+<p>Assim que a chave for criada, precisamos copia-la para o <code>Segundo Controlador de Domínio</code> <strong>DC2</strong>. Execute o comando:</p>
+<pre><code>ssh-copy-id root@IP-Seu-DC2
+</code></pre>
+<p>Insira a senha do <code>root</code> de seu <strong>DC2</strong>. Após a resposta do comando a chave criada será copiada para o seu DC2 e estará apto a acessar o DC2 de forma automática.</p>
+<p>Após o comando, uma tela parecida com a saída abaixo deve aparecer.</p>
+<p>Analise os comandos na figura abaixo:</p>
+<p><img alt="alt=text" src="../ssh-copy2.png" /></p>
+<hr />
+<h1 id="volte-para-seu-dc1">Volte para seu DC1</h1>
+<h2 id="backup-arquivo-idmapldb">Backup arquivo <code>idmap.ldb</code></h2>
+<p>No seu <strong>DC1</strong>:</p>
+<p>Para fazer a <code>replicação</code> do <code>sysvol</code> do <strong>DC1</strong> para o <strong>DC2</strong>, o <code>DC2</code> deve ter o mesmo mapa <strong>ID</strong> para os usuários e grupos. Execute o comando para fazer um backup do arquivo <strong>idmap.ldb:</strong></p>
+<pre><code>tdbbackup -s.bak /usr/local/samba/private/idmap.ldb idmap.bak
+</code></pre>
+<p>Com o arquivo de backup gerado: <code>idmap.ldb.bak</code> vamos utilizar o comando <code>pwd</code> que lista o caminho de diretório que estamos e com o comando <code>ls idmap.ldb.bak</code> listamos o arquivo desejado.</p>
+<p>Analise a figura:</p>
+<p><img alt="alt=text" src="../idmap-bkp-criado9.png" /></p>
+<p>Podemos copiar o arquivo gerado para o caminho de seu <strong>DC2</strong> executando o comando:</p>
+<pre><code>scp /usr/local/samba/private/idmap.ldb.bak root@IP-SEU-DC2:/usr/local/samba/private/
+</code></pre>
+<p>Veja a figura:</p>
+<p><img alt="alt=text" src="../idmap-copiado.png" /></p>
+<hr />
+<h1 id="conecte-se-ao-seu-dc2">Conecte-se ao seu DC2</h1>
+<p><strong>Conecte-se ao DC2</strong> para renomear o arquivo de backup enviado através do DC1 (idmap.ldb.bak). Para renomear o arquivo, utilize o comando:</p>
+<pre><code>mv /usr/local/samba/private/idmap.ldb.bak idmap.ldb
+</code></pre>
+<p>Analise as figuras:</p>
+<p><img alt="alt+text" src="../mv-renome.png" /></p>
+<p>Listando o arquivo renomeado no <strong>DC2</strong> (idmap.ldb)</p>
+<p><img alt="alt=text" src="../listando-idmap-srv2.png" /></p>
+<hr />
+<h1 id="reconecte-se-ao-seu-dc1">Reconecte-se ao seu DC1</h1>
+<h2 id="comando-ntacl-samba-tool">Comando NTACL (samba-tool)</h2>
+<p>Execute o comando em seu <strong>DC1</strong> (Controlador de Domínio Principal):</p>
+<pre><code>samba-tool ntacl sysvolreset
+</code></pre>
+<hr />
+<h2 id="sysvol-backup-dc1-para-membro-dc2">Sysvol Backup (DC1 para membro DC2)</h2>
+<p>Vamos executar um backup do <code>DC1</code> para o <code>DC2</code>. Para efeito de <code>teste</code>, execute o comando utilizando a opção <code>--dry-run</code> para um teste <code>sem alterações</code>:</p>
+<pre><code>rsync --dry-run -XAavz --delete-after --progress --stats /usr/local/samba/var/locks/sysvol root@IP-DC2:/usr/local/samba/var/locks/sysvol/
+</code></pre>
+<p>O comando <strong>rsync</strong> fará uma copia do <strong>sysvol</strong> de seu <code>DC1</code> (<strong>parte1</strong>) para o <strong>sysvol</strong> de seu <code>DC2</code> (<strong>parte2</strong>): Verifique:</p>
+<p><code>Parte 1:</code></p>
+<p>rsync --dry-run -XAavz --delete-after --progress --stats <strong>/usr/local/samba/var/locks/sysvol/</strong></p>
+<hr />
+<p><code>Parte 2:</code></p>
+<p>root@<strong>IP-DC2:/usr/local/samba/var/locks/sysvol/</strong></p>
+<p>O resultado deve ser algo parecido como abaixo:</p>
+<pre><code>building file list ... 
+12 files to consider
+./
+seu.dominio/
+seu.dominio/Policies/
+seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/
+seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/GPT.INI
+seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/MACHINE/
+seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/USER/
+seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/
+seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/GPT.INI
+seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/MACHINE/
+seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/USER/
+seu.dominio/scripts/
+
+Number of files: 12 (reg: 2, dir: 10)
+Number of created files: 9 (reg: 2, dir: 7)
+Number of deleted files: 0
+Number of regular files transferred: 2
+Total file size: 40 bytes
+Total transferred file size: 40 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.038 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 2,011
+Total bytes received: 51
+
+sent 2,011 bytes  received 51 bytes  1,374.67 bytes/sec
+total size is 40  speedup is 0.02 **(DRY RUN)**
+</code></pre>
+<p>Com o resultado positivo (sem erros), utilize o comando sem a opção <strong>--dry-run</strong> . Desta forma o comando <code>realmente</code> será executado.</p>
+<pre><code>rsync -XAavz --delete-after --progress --stats /usr/local/samba/var/locks/sysvol dc2@IP-DC2:/usr/local/samba/var/locks/sysvol/
+</code></pre>
+<p>O resultado deve ser parecido como mostra abaixo:</p>
+<pre><code>building file list ... 
+12 files to consider
+./
+seu.dominio/
+seu.dominio/Policies/
+seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/
+seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/GPT.INI
+             20 100%    0.00kB/s    0:00:00 (xfr#1, to-chk=7/12)
+seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/MACHINE/
+seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/USER/
+seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/
+seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/GPT.INI
+             20 100%   19.53kB/s    0:00:00 (xfr#2, to-chk=3/12)
+seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/MACHINE/
+seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/USER/
+seu.dominioscripts/
+deleting sysvol/seu.dominio/scripts/
+deleting sysvol/seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/USER/
+deleting sysvol/seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/MACHINE/
+deleting sysvol/seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/GPT.INI
+deleting sysvol/seu.dominio/Policies/{6AC1786C-016F-11D2-945F-00C04FB984F9}/
+deleting sysvol/seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/USER/
+deleting sysvol/seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/MACHINE/
+deleting sysvol/seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/GPT.INI
+deleting sysvol/seu.dominio/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/
+deleting sysvol/seu.dominio/Policies/
+deleting sysvol/seu.dominio/
+deleting sysvol/
+
+Number of files: 12 (reg: 2, dir: 10)
+Number of created files: 9 (reg: 2, dir: 7)
+Number of deleted files: 12 (reg: 2, dir: 10)
+Number of regular files transferred: 2
+Total file size: 40 bytes
+Total transferred file size: 40 bytes
+Literal data: 40 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.012 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 4,091
+Total bytes received: 106
+
+sent 4,091 bytes  received 106 bytes  2,798.00 bytes/sec
+total size is 40  speedup is 0.01
+</code></pre>
+<p>Para automatizar o processo, insira o comando no <strong>crontab</strong>. Para aprender mais sobre o crontab clique <a href="https://www.hostinger.com.br/tutoriais/cron-job-guia?ppc_campaign=google_search_generic_hosting_all&amp;bidkw=defaultkeyword&amp;lo=1031952&amp;gclid=CjwKCAjw__ihBhADEiwAXEazJsMs2yOLBskI2NlzC9qK_ovK0G1a9KsbBpIfWGsKR49S0-V8Fa2mHBoCZJsQAvD_BwE">aqui</a></p>
+<h2 id="script-crontab">Script crontab</h2>
+<p>Adicione um script no crontab para o backup ser automático com o comando:</p>
+<pre><code>crontab -e
+</code></pre>
+<p>Se for a primeira vez que executou este comando, pode aparecer um breve menu para selecionar o editor desejado como mostra abaixo. Selecione a <code>opção 1</code> para o editor de textos <code>nano</code>:</p>
+<pre><code>Select an editor.  To change later, run 'select-editor'.
+  1. /bin/nano        &lt;---- easiest
+  2. /usr/bin/vim.tiny
+  3. /bin/ed
+</code></pre>
+<p>Vá até a última linha e insira a linha de comando como abaixo:</p>
+<pre><code>0 12 * * 1-5 root rsync -XAavz --delete-after --progress --stats /usr/local/samba/var/locks/sysvol/ root@IP-DC2:/usr/local/samba/var/locks/sysvol/
+</code></pre>
+<p>Para salvar o arquivo, utilize o comando:</p>
+<p><strong>Para salvar</strong> <code>control+o</code> e <strong>para sair</strong> <code>control+x</code></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>
