@@ -2,6 +2,8 @@
 
 Rocky Linux 9.x with Samba AD-DC
 
+Access: [GitHub Pages](https://doguibnu.github.io/rocky9sambaad/)
+
 ### ENG-USA:
 
 In this documentation we will going to install samba-ad by compilation mode. With 3 kinds of machines:
@@ -21,6 +23,7 @@ ___________________________________________________________
 ### PT-BR
 Nesta documentação nós iremos instalar o samba-ad através do modo de compilação. Com 3 tipos de máquinas:
 
+Acesso: [GitHub Pages](https://doguibnu.github.io/rocky9sambaad/)
 ___________________________________________________________
 
 ### Máquina 01:
